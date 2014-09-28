@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+require 'minitest/unit'
+require 'csv'
+
+MiniTest::Unit.autorun
+
+class TestBooksMoviesTSV < MiniTest::Unit::TestCase
+    def setup
+      @books_movies_tsv = CSV.open("books_movies.tsv", col_sep:"\t", headers:true)
+    end
+
+    def teardown
+      @books_movies_tsv.close
+    end
+
+    def test_books_movies_tsv
+      @books_movies_tsv.each do |row|
+        error_msg = "#{row.to_s} is wrong"
+        assert_kind_of(String, row["book:title"], error_msg) 
+        assert(row["book:title"]!="") 
+
+        assert_kind_of(String, row["book:isbn"], error_msg) 
+        assert(row["book:isbn"]!="", error_msg) 
+
+        assert_kind_of(String, row["movie:youtube_id"], error_msg) 
+        assert(row["movie:youtube_id"]!="", error_msg) 
+      end
+    end
+end
